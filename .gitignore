@@ -31,3 +31,4 @@ phpstan.neon
 /.phpunit.result.cache
 /coverage/
 /phpstan.neon
+/.env.docker

@@ -43,3 +43,15 @@ Status legend: **LOCKED** (implemented), **OPEN** (to discuss before iteration 2
 5. **API auth:** Symfony access tokens vs LexikJWT; the `api` firewall stub is reserved (stateless).
 6. **Approvals:** non-admin tasks are currently active immediately; do we want moderation later?
 7. **Data retention:** soft-delete (`is_active=false`) is used; deleting users with history is blocked (RESTRICT).
+
+## Review pass before iteration 2
+
+Recommended defaults to confirm (none implemented beyond what is listed under LOCKED):
+
+| Question | Recommendation |
+|---|---|
+| Leaderboard weeks | Add a household timezone for the shared leaderboard; keep per-user `week_key` for personal views |
+| Recurring tasks | Regenerate per household on a simple preset cadence (daily/weekly), assigned on claim; reserve RRULE for later |
+| Rewards | Define as a catalog granted by `WeeklyResult` rank/points thresholds; start with manual redemption |
+| User-created reward values | Keep the 1..100 cap; consider admin approval above a threshold |
+| API auth | Symfony `access_token` first (see `docs/API.md`) |

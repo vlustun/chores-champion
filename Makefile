@@ -6,10 +6,24 @@ CONSOLE = $(PHP) bin/console
 COMPOSER= $(RUN) composer
 
 .DEFAULT_GOAL := help
-.PHONY: help up down logs install migrate fixtures db-test test test-unit test-integration test-functional coverage stan cs cs-fix serve admin check
+.PHONY: stack-up stack-down stack-logs stack-migrate help up down logs install migrate fixtures db-test test test-unit test-integration test-functional coverage stan cs cs-fix serve admin reset-password check
 
 help: ## Show this help
 	@grep -E '^[a-zA-Z_-]+:.*?## ' $(MAKEFILE_LIST) | awk 'BEGIN{FS=":.*?## "}{printf "  \033[36m%-18s\033[0m %s\n",$$1,$$2}'
+
+STACK = docker compose $(if $(wildcard .env.docker),--env-file .env.docker)
+
+stack-up: ## Build and start the nginx + php-fpm + MySQL stack
+	$(STACK) up -d --build --wait
+
+stack-down: ## Stop the full stack
+	$(STACK) down
+
+stack-logs: ## Tail web + app logs
+	$(STACK) logs -f web app
+
+stack-migrate: ## Run migrations inside the app container
+	$(STACK) exec app php bin/console doctrine:migrations:migrate --no-interaction
 
 up: ## Start MySQL (waits until healthy)
 	docker compose up -d --wait db
@@ -62,5 +76,8 @@ serve: ## Run the app on http://127.0.0.1:8000
 
 admin: ## Create an admin: make admin EMAIL=a@b.c NAME=Me PASSWORD=secret123
 	$(CONSOLE) app:create-admin "$(EMAIL)" "$(NAME)" "$(PASSWORD)"
+
+reset-password: ## Set a user's password: make reset-password EMAIL=a@b.c [PASSWORD=secret123] (prompts if omitted)
+	$(CONSOLE) app:reset-password "$(EMAIL)" $(PASSWORD)
 
 check: cs stan test ## Everything CI runs

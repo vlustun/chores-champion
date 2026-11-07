@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+{% block title %}Profile · Chores Champion{% endblock %}
+{% block body %}
+<section class="card">
+    <h1>Profile</h1>
+    <p class="meta">{{ user.email }} · times are shown in <strong>{{ user.timezone }}</strong>{% if not user.timezoneManual %} (auto-detected){% endif %}.</p>
+    {{ form_start(form) }}
+        {{ form_row(form.name) }}
+        {{ form_row(form.phoneNr) }}
+        {{ form_row(form.timezone) }}
+        {{ form_row(form.timezoneAuto) }}
+        <button type="submit">Save</button>
+    {{ form_end(form) }}
+    <p class="meta"><a href="{{ path('app_profile_password') }}">Change my password</a></p>
+</section>
+{% endblock %}

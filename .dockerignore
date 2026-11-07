@@ -1,0 +1,14 @@
+.git
+.github
+.env.local
+.env.*.local
+.env.docker
+vendor
+var
+node_modules
+coverage
+public/assets
+.phpunit.cache
+.php-cs-fixer.cache
+tests
+docs

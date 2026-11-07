@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+{% block title %}Add task · Chores Champion{% endblock %}
+{% block body %}
+<section class="card">
+    <h1>Add a task</h1>
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <button type="submit">Add</button>
+    {{ form_end(form) }}
+</section>
+{% endblock %}

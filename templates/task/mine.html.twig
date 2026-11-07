@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+{% block title %}My tasks · Chores Champion{% endblock %}
+{% block body %}
+<h1>My tasks</h1>
+{% for tu in open %}
+<article class="card">
+    <div class="task">
+        <div>
+            <h3>{{ tu.task.title }} <span class="badge badge-{{ tu.task.priority.value }}">{{ tu.task.priority.label }}</span></h3>
+            <div class="meta">{{ tu.status.label }}
+                {% if tu.deadlineAt %} · due {% include '_partials/local_time.html.twig' with {at: tu.deadlineAt, tz: app.user.timezone} only %}{% endif %}
+                {% if tu.parent %} · part of “{{ tu.parent.task.title }}”{% endif %}</div>
+        </div>
+        <div class="actions">
+            {% set token = csrf_token('tu' ~ tu.id) %}
+            {% if tu.status.value == 'pending' %}
+            <form method="post" action="{{ path('app_task_start', {id: tu.id}) }}"><input type="hidden" name="_token" value="{{ token }}"><button>Start</button></form>
+            {% else %}
+            <form method="post" action="{{ path('app_task_complete', {id: tu.id}) }}"><input type="hidden" name="_token" value="{{ token }}"><button>Complete</button></form>
+            {% endif %}
+            <form method="post" action="{{ path('app_task_cancel', {id: tu.id}) }}"><input type="hidden" name="_token" value="{{ token }}"><button class="secondary">Cancel</button></form>
+        </div>
+    </div>
+</article>
+{% else %}
+<p class="card">No open tasks. <a href="{{ path('app_tasks') }}">Pick one up</a>.</p>
+{% endfor %}
+
+<h2>Recently finished</h2>
+<div class="card"><table>
+    {% for tu in recent %}
+    <tr><td>{{ tu.task.title }}</td><td>{{ tu.status.label }}</td><td>{{ tu.pointsGained }} pts</td>
+        <td>{% include '_partials/local_time.html.twig' with {at: tu.completedAt, tz: app.user.timezone} only %}</td></tr>
+    {% else %}<tr><td>Nothing yet.</td></tr>{% endfor %}
+</table></div>
+{% endblock %}

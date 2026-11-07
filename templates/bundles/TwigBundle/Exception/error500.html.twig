@@ -1,0 +1,2 @@
+{# Fallback used by Symfony's own error controller (only reached if ExceptionSubscriber could not handle the error). #}
+{% include 'error/error.html.twig' with {problem: {status: 500, title: 'Internal Server Error', detail: 'Something went wrong on our side. Please try again later.', request_id: null}} only %}

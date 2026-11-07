@@ -1,0 +1,9 @@
+{% extends '@EasyAdmin/page/content.html.twig' %}
+{% block page_title %}Dashboard{% endblock %}
+{% block main %}
+<div class="row g-3">
+    {% for label, value in {'Available tasks': tasks, 'Active users': users, 'Open claims': open_claims, 'Audit entries': audit_rows} %}
+    <div class="col-md-3"><div class="card"><div class="card-body"><div class="text-muted">{{ label }}</div><div class="fs-2 fw-bold">{{ value }}</div></div></div></div>
+    {% endfor %}
+</div>
+{% endblock %}

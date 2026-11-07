@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Chores Champion – make chores a game{% endblock %}
+
+{% block body %}
+<section class="hero">
+    <h1>🏆 Chores Champion</h1>
+    <p class="lead">Claim chores, earn points and climb the weekly leaderboard. Housework, but with bragging rights.</p>
+    <p class="cta">
+        <a class="btn btn-lg" href="{{ path('app_login') }}">Log in</a>
+    </p>
+</section>
+
+<section class="features">
+    <div class="card">
+        <h3>🧹 Chores</h3>
+        <p>Pick up any open task, finish it, and let everyone see who did what.</p>
+    </div>
+    <div class="card">
+        <h3>⭐ Points</h3>
+        <p>Every chore is worth points based on its priority, so the nasty jobs pay off.</p>
+    </div>
+    <div class="card">
+        <h3>📅 Weekly leaderboard</h3>
+        <p>A fresh race every week. Who will be this week's champion?</p>
+    </div>
+</section>
+{% endblock %}

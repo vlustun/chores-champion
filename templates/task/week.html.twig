@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+{% block title %}Week {{ week_key }} · Chores Champion{% endblock %}
+{% block body %}
+<h1>Week {{ week_key }}</h1>
+<div class="card">
+    <div class="meta">Your week ({{ app.user.timezone }}): Monday
+        {% include '_partials/local_time.html.twig' with {at: current.start, tz: app.user.timezone} only %} →
+        {% include '_partials/local_time.html.twig' with {at: current.end, tz: app.user.timezone} only %}</div>
+    <div class="stat">{{ current.points }} pts</div>
+    <div class="meta">{{ current.completed }} task{{ current.completed == 1 ? '' : 's' }} completed. Weekly rewards coming soon.</div>
+</div>
+<h2>Leaderboard</h2>
+<div class="card"><table>
+    <tr><th>#</th><th>Name</th><th>Tasks</th><th>Points</th></tr>
+    {% for row in board %}
+    <tr><td>{{ row.rank }}</td><td>{{ row.user.name }}</td><td>{{ row.completed }}</td><td>{{ row.points }}</td></tr>
+    {% else %}<tr><td colspan="4">No completed tasks yet this week.</td></tr>{% endfor %}
+</table></div>
+{% endblock %}

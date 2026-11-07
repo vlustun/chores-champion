@@ -1,0 +1,38 @@
+name: CI
+on:
+  push: { branches: [main] }
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:8.4
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: chores
+        ports: ["3306:3306"]
+        options: >-
+          --health-cmd="mysqladmin ping -h 127.0.0.1 -uroot -proot --silent"
+          --health-interval=5s --health-timeout=5s --health-retries=20
+    env:
+      APP_ENV: test
+      DATABASE_URL: "mysql://root:root@127.0.0.1:3306/chores?serverVersion=8.4&charset=utf8mb4"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.3"
+          extensions: intl, pdo_mysql, ctype, iconv
+          coverage: pcov
+      - run: composer install --no-interaction --prefer-dist
+      - run: vendor/bin/php-cs-fixer fix --dry-run --diff
+      - run: php bin/console cache:warmup --env=dev
+        env: { APP_ENV: dev }
+      - run: vendor/bin/phpstan analyse --memory-limit=1G
+      - run: php bin/console doctrine:database:create --if-not-exists
+      - run: php bin/console doctrine:migrations:migrate --no-interaction
+      - run: vendor/bin/phpunit --testsuite unit
+      - run: vendor/bin/phpunit --testsuite integration
+      - run: vendor/bin/phpunit --testsuite functional

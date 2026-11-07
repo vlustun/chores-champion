@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+{% block title %}Forgot your password · Chores Champion{% endblock %}
+{% block body %}
+<section class="card narrow">
+    <h1>Forgot your password?</h1>
+    <p class="meta">Enter your email and we'll send you a link to choose a new one.</p>
+    {{ form_start(form) }}
+        {{ form_row(form.email) }}
+        <button type="submit">Send reset link</button>
+    {{ form_end(form) }}
+    <p class="meta"><a href="{{ path('app_login') }}">Back to log in</a></p>
+</section>
+{% endblock %}

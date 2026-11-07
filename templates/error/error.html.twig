@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ problem.status }} · {{ problem.title }}</title>
+    <style>
+        body { font: 16px/1.5 system-ui, sans-serif; background: #f6f7fb; color: #1d2433; display: grid; place-items: center; min-height: 100vh; margin: 0; }
+        .box { background: #fff; border: 1px solid #e4e7ec; border-radius: 12px; padding: 2rem; max-width: 460px; text-align: center; }
+        .code { font-size: 3rem; font-weight: 700; color: #4f46e5; }
+        .meta { color: #667085; font-size: .8rem; }
+        a { color: #4f46e5; }
+        ul { text-align: left; color: #dc2626; }
+    </style>
+</head>
+<body>
+<div class="box" role="alert">
+    <div class="code">{{ problem.status }}</div>
+    <h1>{{ problem.title }}</h1>
+    <p>{{ problem.detail }}</p>
+    {% if problem.errors is defined %}<ul>{% for field, messages in problem.errors %}{% for m in messages %}<li>{{ field }}: {{ m }}</li>{% endfor %}{% endfor %}</ul>{% endif %}
+    <p><a href="/">Back to the app</a></p>
+    {% if problem.request_id %}<p class="meta">Reference: {{ problem.request_id }}</p>{% endif %}
+</div>
+</body>
+</html>

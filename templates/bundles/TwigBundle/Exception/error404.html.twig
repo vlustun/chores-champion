@@ -1,0 +1,2 @@
+{# Fallback used by Symfony's own error controller (only reached if ExceptionSubscriber could not handle the error). #}
+{% include 'error/error.html.twig' with {problem: {status: 404, title: 'Not Found', detail: 'We could not find what you were looking for.', request_id: null}} only %}

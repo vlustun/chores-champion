@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+{% block title %}Tasks · Chores Champion{% endblock %}
+{% block body %}
+<div class="task">
+    <h1>Available tasks</h1>
+    <a class="btn" href="{{ path('app_task_new') }}">+ Add task</a>
+</div>
+<form method="get" class="card">
+    <label>Type
+        <select name="type" onchange="this.form.submit()">
+            <option value="">All</option>
+            {% for t in types %}<option value="{{ t.id }}" {{ selected_type == t.id ? 'selected' }}>{{ t.name }}</option>{% endfor %}
+        </select>
+    </label>
+</form>
+{% for task in tasks %}
+<article class="card">
+    <div class="task">
+        <div>
+            <h3>{{ task.title }} <span class="badge badge-{{ task.priority.value }}">{{ task.priority.label }}</span></h3>
+            <div class="meta">{{ task.type.name }} · {{ task.recurrenceKind.label }} · {{ task.rewardValue ?? 'default' }} base pts</div>
+            {% if task.description %}<p>{{ task.description|nl2br }}</p>{% endif %}
+        </div>
+        <form class="actions" method="post" action="{{ path('app_task_claim', {id: task.id}) }}">
+            <input type="hidden" name="_token" value="{{ csrf_token('claim' ~ task.id) }}">
+            <label class="meta">Deadline (optional, {{ app.user.timezone }})
+                <input type="datetime-local" name="deadline">
+            </label>
+            {% if open_claims %}
+            <label class="meta">Part of
+                <select name="parent"><option value="">—</option>
+                    {% for c in open_claims %}<option value="{{ c.id }}">{{ c.task.title }}</option>{% endfor %}
+                </select>
+            </label>
+            {% endif %}
+            <button type="submit">Pick up</button>
+        </form>
+    </div>
+</article>
+{% else %}
+<p class="card">Nothing to do right now. 🎉</p>
+{% endfor %}
+{% endblock %}

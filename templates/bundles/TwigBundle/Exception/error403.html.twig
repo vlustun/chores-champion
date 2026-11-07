@@ -1,0 +1,2 @@
+{# Fallback used by Symfony's own error controller (only reached if ExceptionSubscriber could not handle the error). #}
+{% include 'error/error.html.twig' with {problem: {status: 403, title: 'Forbidden', detail: 'You do not have access to this.', request_id: null}} only %}

@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+{% block title %}Check your email · Chores Champion{% endblock %}
+{% block body %}
+<section class="card narrow">
+    <h1>Check your email</h1>
+    <p>If an active account exists for that address, we've sent a link to reset the password. It is valid for {{ lifetimeMinutes }} minutes.</p>
+    <p class="meta">Nothing arrived? Check your spam folder, or ask an administrator to send you a reset link.</p>
+    <p class="meta"><a href="{{ path('app_login') }}">Back to log in</a></p>
+</section>
+{% endblock %}

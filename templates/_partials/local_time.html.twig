@@ -1,0 +1,4 @@
+{# Usage: include with {at: dateTimeImmutableUtc, tz: app.user.timezone}. Server renders local time; JS re-formats to device locale. #}
+{% if at %}
+<time datetime="{{ at|date('c', 'UTC') }}" data-timezone-target="time" title="{{ at|date('Y-m-d H:i', 'UTC') }} UTC">{{ at|date('D j M, H:i', tz|default('UTC')) }}</time>
+{% else %}—{% endif %}
