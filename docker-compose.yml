@@ -1,3 +1,4 @@
+
 name: chores-champion
 
 services:
@@ -93,6 +94,9 @@ services:
       DATABASE_URL: "mysql://chores:chores@db:3306/chores?serverVersion=8.4&charset=utf8mb4"
       COMPOSER_HOME: /tmp/composer
       HOME: /tmp
+      XDEBUG_MODE: ${XDEBUG_MODE:-off}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     volumes:
       - .:/app
     depends_on:

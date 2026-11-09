@@ -83,3 +83,32 @@ Deferred; groundwork and plan in `docs/API.md`.
 ## Layout
 `src/Service` business rules (controller-agnostic) · `src/Controller/Admin` EasyAdmin · `src/Controller` user web UI ·
 `src/EventSubscriber` audit/errors/metrics/request context · `tests/{Unit,Integration,Functional}`.
+
+## Xdebug
+
+```bash
+docker compose --env-file .env.docker -f docker-compose.yml -f compose.xdebug.yaml up -d --build app
+docker compose exec app php -m | grep xdebug
+```
+
+- Uses the `fpm-dev` image target with the source bind-mounted at `/app`. Production (`fpm`) is unchanged.
+- Switch modes with `XDEBUG_MODE` (e.g. `XDEBUG_MODE=debug,develop`, or `off`).
+- IDE: listen on port **9003**, server name `chores-champion`, path mapping `/app` → project root.
+- Debugging starts on trigger: send the `XDEBUG_TRIGGER` cookie or query parameter.
+- The `php` tools container (and the `cli` image) include Xdebug with mode `off`; run with `XDEBUG_MODE=debug` to use it.
+
+### Troubleshooting: `composer install` fails inside the `app` container
+
+Symptom: `Failed to download composer/pcre ... /app/vendor/composer/pcre does not exist and could not be created`
+and `Cannot create cache directory /var/www/.composer/cache`.
+
+Cause: php-fpm runs as `www-data` (uid 33) but the bind-mounted `vendor/` and `var/` belong to your host user (uid 1000).
+
+Fix: `compose.xdebug.yaml` runs `app` as `${UID}:${GID}` with `COMPOSER_HOME=/tmp/composer`. Bash does not export `UID`, so run `export UID GID=$(id -g)` or set them in `.env.docker`, then rebuild:
+
+```bash
+docker compose --env-file .env.docker -f docker-compose.yml -f compose.xdebug.yaml up -d --build app
+make install-app     # composer install in the app container as your user
+make install RUN="docker compose run --rm php"   # or use the tools container
+sudo chown -R $USER:$USER vendor var   # only if earlier runs left root-owned files
+```
