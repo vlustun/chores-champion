@@ -47,10 +47,10 @@ class Task
     #[ORM\Column(name: 'recurrence_kind', length: 16, enumType: RecurrenceKind::class)]
     private RecurrenceKind $recurrenceKind = RecurrenceKind::OneOff;
 
-    /** 
-     * Reserved for later (cadence definition). 
-     * 
-     * @var array<string, mixed>|null 
+    /**
+     * Reserved for later (cadence definition).
+     *
+     * @var array<string, mixed>|null
      */
     #[ORM\Column(name: 'recurrence_config', type: 'json', nullable: true)]
     private ?array $recurrenceConfig = null;

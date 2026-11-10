@@ -13,8 +13,8 @@ use Symfony\Component\Security\Core\Validator\Constraints\UserPassword;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
-/** 
- * New password (twice). With require_current_password it also asks for, and checks, the current one. 
+/**
+ * New password (twice). With require_current_password it also asks for, and checks, the current one.
  *
  * @extends AbstractType<mixed>
  */ 
