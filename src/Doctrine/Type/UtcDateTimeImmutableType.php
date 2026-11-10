@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace App\Doctrine\Type;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Doctrine\DBAL\Types\ConversionException;
 use Doctrine\DBAL\Types\DateTimeImmutableType;
+use Doctrine\DBAL\Types\Exception\InvalidFormat;
+use Doctrine\DBAL\Types\Exception\InvalidType;
 
 /**
  * Persists every instant as UTC, regardless of the PHP default timezone
@@ -23,7 +24,7 @@ final class UtcDateTimeImmutableType extends DateTimeImmutableType
             return null;
         }
         if (!$value instanceof \DateTimeInterface) {
-            throw ConversionException::conversionFailedInvalidType($value, self::NAME, ['null', \DateTimeInterface::class]);
+            throw InvalidType::new($value, self::NAME, ['null', \DateTimeInterface::class]);
         }
 
         return \DateTimeImmutable::createFromInterface($value)
@@ -37,13 +38,13 @@ final class UtcDateTimeImmutableType extends DateTimeImmutableType
             return $value;
         }
         if (!\is_string($value)) {
-            throw ConversionException::conversionFailedInvalidType($value, self::NAME, ['null', 'string']);
+            throw InvalidType::new($value, self::NAME, ['null', 'string']);
         }
         $utc = new \DateTimeZone('UTC');
         $date = \DateTimeImmutable::createFromFormat('!Y-m-d H:i:s.u', $value, $utc)
             ?: \DateTimeImmutable::createFromFormat('!Y-m-d H:i:s', $value, $utc);
         if (false === $date) {
-            throw ConversionException::conversionFailedFormat($value, self::NAME, self::FORMAT);
+            throw InvalidFormat::new($value, self::NAME, self::FORMAT);
         }
 
         return $date;

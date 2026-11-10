@@ -1,0 +1,20 @@
+# Xdebug override for the app service.
+#   docker compose -f docker-compose.yml -f compose.xdebug.yaml up -d --build app
+# Switch modes: XDEBUG_MODE=debug,develop (default: debug), or off.
+services:
+  app:
+    build:
+      target: fpm-dev
+    # Run as the host user so the bind-mounted /app (vendor/, var/) is writable.
+    # bash does not export UID by default: `export UID GID` or set them in .env.docker.
+    user: "${UID:-1000}:${GID:-1000}"
+    environment:
+      COMPOSER_HOME: /tmp/composer
+      HOME: /tmp
+      APP_ENV: dev
+      XDEBUG_MODE: ${XDEBUG_MODE:-debug}
+      PHP_IDE_CONFIG: serverName=chores-champion
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - .:/app

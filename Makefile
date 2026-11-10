@@ -1,3 +1,6 @@
+export UID ?= $(shell id -u)
+export GID ?= $(shell id -g)
+
 # Prefix for running PHP tooling. Default: local php/composer.
 # No local intl/pdo_mysql?  make test RUN="docker compose run --rm php"
 RUN     ?=
@@ -6,7 +9,7 @@ CONSOLE = $(PHP) bin/console
 COMPOSER= $(RUN) composer
 
 .DEFAULT_GOAL := help
-.PHONY: stack-up stack-down stack-logs stack-migrate help up down logs install migrate fixtures db-test test test-unit test-integration test-functional coverage stan cs cs-fix serve admin reset-password check
+.PHONY: stack-up stack-down stack-logs stack-migrate help up down logs install install-app migrate fixtures db-test test test-unit test-integration test-functional coverage stan cs cs-fix serve admin reset-password check
 
 help: ## Show this help
 	@grep -E '^[a-zA-Z_-]+:.*?## ' $(MAKEFILE_LIST) | awk 'BEGIN{FS=":.*?## "}{printf "  \033[36m%-18s\033[0m %s\n",$$1,$$2}'
@@ -36,6 +39,9 @@ logs: ## Tail DB logs
 
 install: ## Install composer dependencies
 	$(COMPOSER) install
+
+install-app: ## Composer install inside the running app container, as the host user
+	docker compose exec -u $(UID):$(GID) -e COMPOSER_HOME=/tmp/composer -e HOME=/tmp app composer install
 
 migrate: ## Run DB migrations (dev)
 	$(CONSOLE) doctrine:migrations:migrate --no-interaction

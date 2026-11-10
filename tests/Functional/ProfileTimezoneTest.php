@@ -27,7 +27,11 @@ final class ProfileTimezoneTest extends WebTestCase
         return (string) $crawler->filter('body')->attr('data-timezone-token-value');
     }
 
-    /** @param array<string, mixed>|string $body */
+    /**
+     * @param array<string, mixed>|string $body
+     *
+     * @return array<string, mixed>
+     */
     private function post(array|string $body): array
     {
         $this->client->request('POST', '/profile/timezone', server: ['CONTENT_TYPE' => 'application/json'], content: \is_array($body) ? json_encode($body) : $body);

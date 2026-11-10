@@ -10,6 +10,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
+/** @extends AbstractType<mixed> */
 final class ResetPasswordRequestType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void

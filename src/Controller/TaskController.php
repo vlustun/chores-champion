@@ -140,7 +140,9 @@ final class TaskController extends AbstractController
 
     private function checkCsrf(Request $request, string $id): void
     {
-        if (!$this->isCsrfTokenValid($id, (string) ($request->request->get('_token') instanceof \Stringable || \is_string($request->request->get('_token')) ? $request->request->get('_token') : ''))) {
+        $rawToken = $request->request->get('_token');
+        $token = \is_string($rawToken) ? $rawToken : '';
+        if (!$this->isCsrfTokenValid($id, $token)) {
             throw new InvalidCsrfToken(context: ['id' => $id]);
         }
     }

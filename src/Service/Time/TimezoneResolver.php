@@ -54,6 +54,7 @@ final class TimezoneResolver
         return array_values(self::buildIdentifierMap());
     }
 
+    /** @return array<string, string> */
     private static function buildIdentifierMap(): array
     {
         $ids = \DateTimeZone::listIdentifiers();
