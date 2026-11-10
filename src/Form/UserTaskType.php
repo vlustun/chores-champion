@@ -21,7 +21,7 @@ use Symfony\Component\Validator\Constraints\Range;
 
 /** 
  * A household member adding a chore. Reward is capped for non-admins. 
- * 
+ *
  * @extends AbstractType<Task>
  */
 final class UserTaskType extends AbstractType

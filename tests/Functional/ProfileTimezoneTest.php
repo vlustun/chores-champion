@@ -29,7 +29,7 @@ final class ProfileTimezoneTest extends WebTestCase
 
     /** 
      * @param array<string, mixed>|string $body
-     * 
+     *
      * @return array<string, mixed> 
      */
     private function post(array|string $body): array
