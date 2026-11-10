@@ -47,8 +47,8 @@ trait Fixtures
         return $user;
     }
 
-    /** 
-     * @param list<string> $roles 
+    /**
+     * @param list<string> $roles
      */
     private function makeLoginUser(string $password = 'password123', string $tz = 'UTC', array $roles = []): User
     {

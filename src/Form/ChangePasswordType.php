@@ -15,7 +15,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 /** 
  * New password (twice). With require_current_password it also asks for, and checks, the current one. 
- * 
+ *
  * @extends AbstractType<mixed>
  */ 
 final class ChangePasswordType extends AbstractType

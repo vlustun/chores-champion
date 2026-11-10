@@ -51,7 +51,7 @@ class Task
      * Reserved for later (cadence definition). 
      * 
      * @var array<string, mixed>|null 
-    */
+     */
     #[ORM\Column(name: 'recurrence_config', type: 'json', nullable: true)]
     private ?array $recurrenceConfig = null;
 
