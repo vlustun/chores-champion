@@ -164,7 +164,6 @@ final class TaskFlowTest extends WebTestCase
         $this->client->request('POST', '/my/abc/start');
         self::assertResponseStatusCodeSame(404);
         self::assertNotNull($task->getId());
-        self::assertNotNull($crawler);
     }
 
     public function testOneOffTaskDisappearsAfterCompletion(): void

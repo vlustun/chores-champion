@@ -32,6 +32,9 @@ use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use SymfonyCasts\Bundle\ResetPassword\Exception\ResetPasswordExceptionInterface;
 
+/**
+ * @extends AbstractCrudController<User>
+ */
 #[IsGranted('ROLE_ADMIN')]
 final class UserCrudController extends AbstractCrudController
 {
@@ -65,7 +68,7 @@ final class UserCrudController extends AbstractCrudController
             ->add(Crud::PAGE_DETAIL, $send);
     }
 
-    /** POST only (rendered as a form) and CSRF-checked: emails a reset link, or shows it once when mail is disabled. */
+    /** @param AdminContext<User> $context */
     #[AdminRoute(path: '/{entityId}/send-password-reset', name: 'send_password_reset', options: ['methods' => ['POST']])]
     public function sendPasswordReset(AdminContext $context, Request $request): RedirectResponse
     {

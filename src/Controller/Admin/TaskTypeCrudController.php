@@ -14,7 +14,9 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-/** Task types are data, not code: admins add new ones at runtime. */
+/**
+ * @extends AbstractCrudController<TaskType>
+ */
 #[IsGranted('ROLE_ADMIN')]
 final class TaskTypeCrudController extends AbstractCrudController
 {

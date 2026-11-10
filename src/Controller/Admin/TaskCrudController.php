@@ -26,6 +26,9 @@ use EasyCorp\Bundle\EasyAdminBundle\Filter\ChoiceFilter;
 use EasyCorp\Bundle\EasyAdminBundle\Filter\EntityFilter;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+/**
+ * @extends AbstractCrudController<Task>
+ */
 #[IsGranted('ROLE_ADMIN')]
 final class TaskCrudController extends AbstractCrudController
 {
@@ -56,7 +59,8 @@ final class TaskCrudController extends AbstractCrudController
 
     public function configureFields(string $pageName): iterable
     {
-        $tz = $this->getUser() instanceof User ? $this->getUser()->getTimezone() : 'UTC';
+        $thisUser = $this->getUser();
+        $tz = $thisUser instanceof User ? $thisUser->getTimezone() : 'UTC';
 
         yield IdField::new('id')->onlyOnIndex();
         yield TextField::new('title');

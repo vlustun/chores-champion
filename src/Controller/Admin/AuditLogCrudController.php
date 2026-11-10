@@ -23,7 +23,9 @@ use EasyCorp\Bundle\EasyAdminBundle\Filter\EntityFilter;
 use EasyCorp\Bundle\EasyAdminBundle\Filter\TextFilter;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-/** Read-only: audit rows can neither be created, edited nor deleted from the UI. */
+/**
+ * @extends AbstractCrudController<AuditLog>
+ */
 #[IsGranted('ROLE_ADMIN')]
 final class AuditLogCrudController extends AbstractCrudController
 {
@@ -59,7 +61,8 @@ final class AuditLogCrudController extends AbstractCrudController
 
     public function configureFields(string $pageName): iterable
     {
-        $tz = $this->getUser() instanceof User ? $this->getUser()->getTimezone() : 'UTC';
+        $thisUser = $this->getUser();
+        $tz = $thisUser instanceof User ? $thisUser->getTimezone() : 'UTC';
 
         yield IdField::new('id');
         yield DateTimeField::new('createdAt', 'When')->setTimezone($tz)->setFormat('medium', 'medium');
