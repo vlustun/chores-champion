@@ -27,8 +27,10 @@ final class ProfileTimezoneTest extends WebTestCase
         return (string) $crawler->filter('body')->attr('data-timezone-token-value');
     }
 
-    /** @param array<string, mixed>|string $body
-     *  @return array<string, mixed> 
+    /** 
+     * @param array<string, mixed>|string $body
+     * 
+     * @return array<string, mixed> 
      */
     private function post(array|string $body): array
     {
